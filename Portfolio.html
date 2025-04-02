@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfólio de HQSantos</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      line-height: 1.6;
+      background-color: #1E1E1E;
+      color: #E0E0E0;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    header {
+      -webkit-text-stroke-width: 0.1px;
+      -webkit-text-stroke-color: black;
+      position: relative;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #010a5791;
+      color: #fff;
+      padding: 4rem 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #starCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+      padding: 2rem 0;
+    }
+
+    .repo {
+      background: #252525;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, background 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .repo:hover {
+      transform: scale(1.05);
+      background: #333;
+    }
+
+    .repo h3 {
+      margin: 0 0 0.5rem;
+      color: #6fa3ef;
+    }
+
+    .repo a {
+      color: #6fa3ef;
+      text-decoration: none;
+    }
+
+    .repo a:hover {
+      text-decoration: underline;
+    }
+
+    .repo p {
+      margin: 0;
+      color: #d3d3d3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      background: #101010;
+      color: #fff;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <canvas id="starCanvas"></canvas>
+    <div class="header-content">
+      <h1>Portfólio de HQSantos</h1>
+      <p>Bem-vindo ao meu portfólio! Aqui estão alguns dos meus projetos no GitHub.</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="repo">
+      <h3><a href="https://github.com/HQSantos/Trabalho_Web" target="_blank">Trabalho_Web</a></h3>
+      <p>CRUD para movimentações de estoque e controle de logística.</p>
+      <p><strong>Linguagem Principal:</strong> JavaScript</p>
+    </div>
+    <div class="repo">
+      <h3><a href="https://github.com/HQSantos/Mine_Sweeper" target="_blank">Mine_Sweeper</a></h3>
+      <p>Jogo de campo minado desenvolvido em Delphi 7.</p>
+      <p><strong>Linguagem Principal:</strong> Pascal</p>
+    </div>
+    <div class="repo">
+      <h3><a href="https://github.com/HQSantos/Projeto_Quadras" target="_blank">Projeto_Quadras</a></h3>
+      <p>Sistema de agendamento de quadras esportivas.</p>
+      <p><strong>Linguagem Principal:</strong> JavaScript</p>
+    </div>
+    <div class="repo">
+      <h3><a href="https://github.com/HQSantos/MindRush" target="_blank">MindRush</a></h3>
+      <p>Jogo sobre a doença de Alzheimer.</p>
+      <p><strong>Linguagem Principal:</strong> C#</p>
+    </div>
+    <div class="repo">
+      <h3><a href="https://github.com/HQSantos/Casinha_Project" target="_blank">Casinha_Project</a></h3>
+      <p>Sistema para otimizar logística e precificação de insumos.</p>
+      <p><strong>Linguagem Principal:</strong> Python</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 HQSantos. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const repos = document.querySelectorAll(".repo");
+
+      const fadeInOnScroll = () => {
+        repos.forEach(repo => {
+          const rect = repo.getBoundingClientRect();
+          if (rect.top < window.innerHeight - 50) {
+            repo.style.opacity = "1";
+            repo.style.transform = "translateY(0)";
+            repo.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
+          }
+        });
+      };
+
+      fadeInOnScroll();
+      window.addEventListener("scroll", fadeInOnScroll);
+
+      const canvas = document.getElementById("starCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = document.querySelector("header").offsetHeight;
+
+      const stars = [];
+      const numStars = 100;
+
+      function createStars() {
+        for (let i = 0; i < numStars; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            speedX: (Math.random() - 0.5) * 0.5,
+            speedY: (Math.random() - 0.5) * 0.5
+          });
+        }
+      }
+
+      function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = "white";
+
+        stars.forEach(star => {
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      function animateStars() {
+        stars.forEach(star => {
+          star.x += star.speedX;
+          star.y += star.speedY;
+
+          if (star.x < 0 || star.x > canvas.width) star.speedX *= -1;
+          if (star.y < 0 || star.y > canvas.height) star.speedY *= -1;
+        });
+
+        drawStars();
+        requestAnimationFrame(animateStars);
+      }
+
+      createStars();
+      animateStars();
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = document.querySelector("header").offsetHeight;
+        stars.length = 0;
+        createStars();
+      });
+    }); 
+  </script>
+</body>
+</html>
